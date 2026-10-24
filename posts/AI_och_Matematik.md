@@ -17,7 +17,7 @@ I 2026 var det då AI tog ett stort steg framåt. [I maj 2026 så löste AI ett 
 
 I matematik finns det 7 problem som är kända för att vara svåra, viktiga och kända, de kallas för "Millenium" problem. Om en människa löser en av dessa så belönas de med 1 miljon dollar. Bara ett av dessa problem har någonsin löst av en människa, i året 2010. 
 
-I september 2026 så påstod OpenAI att deras AI hade lyckats lösa ett av dessa problem. De hade använt en intern modell som inte är släppt än. Det tog dem 10.00 AI agenter som jobbade tillsammans, det tog 88 timmar och det kostade mer än 10 miljoner dollar.
+I september 2026 så påstod OpenAI att deras AI hade lyckats [lösa ett av dessa problem.](https://openai.com/index/navier-stokes-solution/) De hade använt en intern modell som inte är släppt än. Det tog dem 10 000 AI agenter som jobbade tillsammans, det tog 88 timmar och det kostade mer än 10 miljoner dollar.
 
 Jag nämnde tidigare att i maj så löstes ett problem som var ett riktigt ordentligt problem som hade kunnat vara med i en journal. 5 månader senare, oktober 2026 så släppte OpenAI en samling lösningar på problem som deras interna modell hade löst. Denna samlingen var *722 problem.* 722 problem olösta problem, som världens bästa matematiker har jobbat på i många år. Många av dessa problem hade gjort en människa berömd om de löste dem, detta var 722.
 

@@ -21,7 +21,7 @@ Startår: 2021
 CEO: Dario Amodei.
 Produkter: Claude
 
-Anthropic startades av en grupp människor som jobbade på OpenAI och ville starta eget. Dario Amodei och hans system var seniora forskare på OpenAI och de tillsammans med ungefär 10 andra lämnade för att start Anthropic. De påstår att de lämnade för att OpenAI inte tog säkerhet tillräckligt seriöst, de ville starta ett företag som tänkte på säkerhet över allt annat.
+Anthropic startades av en grupp människor som jobbade på OpenAI och ville starta eget. Dario Amodei och hans syster var seniora forskare på OpenAI och de tillsammans med ungefär 10 andra lämnade för att start Anthropic. De påstår att de lämnade för att OpenAI inte tog säkerhet tillräckligt seriöst, de ville starta ett företag som tänkte på säkerhet över allt annat.
 
 De finns många som har starka åsikter om OpenAI eller Anthropic är bättre. Många påstår att OpenAI är för fokuserad på att gå snabbt och tjäna pengar och inte är bra nog på säkerhet. Samtidigt påstår andra att Anthropic tjänar lika mycket pengar och går lika fort och de pratar bara om säkerhet för att tjäna mer pengar. De är svårt att säga vem som har rätt, men dessa företag är definitivt rivaler.
 
