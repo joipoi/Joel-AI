@@ -1,6 +1,7 @@
 ---
 date: 2026-09-27
 title: Intro
+about: true
 ---
 Jag vill skriva en blogg om AI eftersom jag har läst om det mycket på sistone och jag tror det kommer bli extremt viktigt. Jag tror också de flesta människor är inte redo på hur snabbt det kommer gå. Jag vill använda denna bloggen för att förklara min åsikt om AI och om vad jag tror kommer hända inom snart. 
 

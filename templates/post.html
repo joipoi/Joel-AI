@@ -1,11 +1,22 @@
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="sv">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>{{title}} | My Blog</title>
+    <title>{{title}} | {{siteName}}</title>
+    <meta name="description" content="{{description}}">
+
+    <!-- Link previews when shared on Facebook, WhatsApp, Messenger etc. -->
+    <meta property="og:type" content="article">
+    <meta property="og:site_name" content="{{siteName}}">
+    <meta property="og:title" content="{{title}}">
+    <meta property="og:description" content="{{description}}">
+    <meta property="og:url" content="{{url}}">
+    <meta property="og:locale" content="sv_SE">
+    <meta property="article:published_time" content="{{date}}">
+    <meta name="twitter:card" content="summary">
 
     <style>
         body {
@@ -33,6 +44,11 @@
             color: #1769aa;
         }
 
+        nav {
+            display: flex;
+            gap: 16px;
+        }
+
         .date {
             color: #666;
         }
@@ -40,14 +56,17 @@
 </head>
 <body>
     <header>
-        <a href="../../">Joels AI blog</a>
+        <nav>
+            <a href="../../">{{siteName}}</a>
+            {{aboutLink}}
+        </nav>
         <hr>
     </header>
 
     <main>
         <article>
             <h1>{{title}}</h1>
-            <p class="date">{{date}}</p>
+            <p class="date"><time datetime="{{date}}">{{displayDate}}</time></p>
 
             {{content}}
         </article>
@@ -55,7 +74,7 @@
 
     <footer>
         <hr>
-        <a href="../../">Tillbaka till inlägg</a>
+        <a href="../../">Tillbaka till alla inlägg</a>
     </footer>
 </body>
 </html>
