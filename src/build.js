@@ -108,7 +108,6 @@ async function build() {
             .replaceAll("{{url}}", escapeHtml(postUrl(post)))
             .replaceAll("{{date}}", escapeHtml(post.date))
             .replaceAll("{{displayDate}}", escapeHtml(post.displayDate))
-            .replaceAll("{{aboutLink}}", aboutLinkHtml(aboutPost, "../../"))
             .replace("{{content}}", post.content);
 
         const postOutputDir = path.join(
@@ -155,7 +154,6 @@ async function build() {
         .replaceAll("{{siteName}}", escapeHtml(SITE_NAME))
         .replaceAll("{{description}}", escapeHtml(SITE_DESCRIPTION))
         .replaceAll("{{url}}", escapeHtml(SITE_URL))
-        .replaceAll("{{aboutLink}}", aboutLinkHtml(aboutPost, ""))
         .replace("{{pinned}}", pinnedHtml)
         .replace("{{posts}}", postListHtml || "<p>Inga inlägg än.</p>");
 
@@ -182,14 +180,6 @@ function slugify(value) {
 
 function postUrl(post) {
     return `${SITE_URL}posts/${post.slug}/`;
-}
-
-function aboutLinkHtml(aboutPost, rootPath) {
-    if (!aboutPost) {
-        return "";
-    }
-
-    return `<a href="${rootPath}posts/${aboutPost.slug}/">Om bloggen</a>`;
 }
 
 // Use the first paragraph of the post as preview text, shortened if needed.
