@@ -16,6 +16,70 @@ const SITE_DESCRIPTION = "Försöker förklara AI och varför jag bryr mig";
 // Max length of the preview text shown when a link is shared.
 const DESCRIPTION_LENGTH = 160;
 
+// The glossary post. Every "## Heading" in it becomes a term that posts can
+// link to with [[Term]] or [[Term|text to show]].
+const GLOSSARY_FILE = "AI_Ordbok.md";
+
+// Filled in by loadGlossary() before any post is turned into HTML.
+let glossary = new Map();
+let glossarySlug = "";
+// Slug of the post currently being built, so links inside the glossary itself
+// can point to "#term" instead of to another page.
+let currentSlug = "";
+
+marked.use({
+    renderer: {
+        // Give headings an id so the glossary (and other posts) can be linked to
+        // a specific section, e.g. /posts/ai-ordbok/#hallucination
+        heading({ tokens, depth, text }) {
+            const id = slugify(text);
+            return `<h${depth} id="${id}">${this.parser.parseInline(tokens)}</h${depth}>\n`;
+        }
+    },
+    extensions: [{
+        // [[Term]] or [[Term|text to show]] -> link to the glossary with a popup.
+        name: "glossaryTerm",
+        level: "inline",
+        start(src) {
+            return src.indexOf("[[");
+        },
+        tokenizer(src) {
+            const match = /^\[\[([^\]|]+)(?:\|([^\]]+))?\]\]/.exec(src);
+
+            if (!match) {
+                return undefined;
+            }
+
+            const term = match[1].trim();
+            const entry = glossary.get(normalizeTerm(term));
+
+            if (!entry) {
+                throw new Error(
+                    `[[${term}]] was not found in ${GLOSSARY_FILE}. ` +
+                    `Known terms: ${[...new Set(glossary.values())].map(e => e.title).join(", ")}`
+                );
+            }
+
+            return {
+                type: "glossaryTerm",
+                raw: match[0],
+                text: (match[2] || term).trim(),
+                entry
+            };
+        },
+        renderer(token) {
+            const href = currentSlug === glossarySlug
+                ? `#${token.entry.id}`
+                : `../${glossarySlug}/#${token.entry.id}`;
+
+            return `<a class="glossary-term" href="${href}"` +
+                ` data-term="${escapeHtml(token.entry.title)}"` +
+                ` data-definition="${escapeHtml(token.entry.definition)}"` +
+                `>${escapeHtml(token.text)}</a>`;
+        }
+    }]
+});
+
 const dateFormatter = new Intl.DateTimeFormat("sv-SE", {
     day: "numeric",
     month: "long",
@@ -37,6 +101,8 @@ async function build() {
     const files = (await fs.readdir(POSTS_DIR))
         .filter(file => file.endsWith(".md"))
         .sort();
+
+    await loadGlossary();
 
     const posts = [];
 
@@ -69,6 +135,8 @@ async function build() {
         if (posts.some(post => post.slug === slug)) {
             throw new Error(`${file} has the same URL slug as another post: ${slug}`);
         }
+
+        currentSlug = slug;
 
         posts.push({
             title: data.title,
@@ -164,6 +232,39 @@ async function build() {
     );
 
     console.log(`Built ${posts.length} posts successfully.`);
+}
+
+// Read the glossary post and collect every "## Heading" as a term.
+// A heading like "Rekursiv Självförbättring, RSI(Recursive Self Improvement)"
+// can be linked with any of its parts: [[RSI]], [[Rekursiv Självförbättring]] ...
+async function loadGlossary() {
+    const source = await fs.readFile(path.join(POSTS_DIR, GLOSSARY_FILE), "utf8");
+    const { data, content } = matter(source);
+
+    glossarySlug = slugify(data.slug || path.basename(GLOSSARY_FILE, ".md"));
+    glossary = new Map();
+
+    let entry = null;
+
+    for (const token of marked.lexer(content)) {
+        if (token.type === "heading" && token.depth === 2) {
+            entry = { title: token.text.trim(), id: slugify(token.text), definition: "" };
+
+            const names = [entry.title, ...entry.title.split(/[(),]/)];
+
+            for (const name of names) {
+                if (normalizeTerm(name)) {
+                    glossary.set(normalizeTerm(name), entry);
+                }
+            }
+        } else if (entry && token.type === "paragraph") {
+            entry.definition = `${entry.definition} ${token.text}`.trim();
+        }
+    }
+}
+
+function normalizeTerm(value) {
+    return String(value).toLowerCase().replace(/\s+/g, " ").trim();
 }
 
 // Turn a filename like "AI_företag" into a clean URL part like "ai-foretag".

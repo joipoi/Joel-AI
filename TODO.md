@@ -10,7 +10,7 @@ Ideas and improvements for the blog, roughly in order of importance.
 ## Website / code
 - [ ] **Image for link previews** (`og:image`). Shared links already show title + text, but a picture makes them stand out much more. One default image for the whole blog is enough to start.
 - [ ] **RSS feed** (`feed.xml`). Needed for the newsletter middle ground above.
-- [ ] **Glossary page ("Ordlista")**. I the user will write this but the Claude can write the code for linking to it when I use a big word
+- [x] **Glossary page ("Ordlista")**. Write `[[Term]]` or `[[Term|text to show]]` in a post to link a word to `AI_Ordbok.md`. Shows a popup with the explanation when clicked.
 - [ ] **Local preview.** An `npm run dev` command that rebuilds and serves the site locally, so you don't need to push to see changes.
 - [ ] **Simple analytics** (e.g. GoatCounter, free and privacy-friendly) to see if anyone is reading.
 - [ ] **Shared stylesheet.** The CSS is duplicated in both templates. Move it to `assets/style.css` and copy `assets/` in the build (it is currently empty and not copied).

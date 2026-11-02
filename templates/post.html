@@ -52,6 +52,60 @@
         .date {
             color: #666;
         }
+
+        /* Words linked to the AI-ordbok: dotted underline + small "?" so they
+           look like "explanation available", not like a normal external link. */
+        a.glossary-term {
+            color: inherit;
+            text-decoration: underline dotted #1769aa;
+            text-decoration-thickness: 2px;
+            text-underline-offset: 3px;
+            cursor: help;
+        }
+
+        a.glossary-term::after {
+            content: "?";
+            display: inline-block;
+            margin-left: 2px;
+            width: 1.1em;
+            height: 1.1em;
+            line-height: 1.1em;
+            border-radius: 50%;
+            background: #1769aa;
+            color: #fff;
+            font-size: 0.65em;
+            font-weight: bold;
+            text-align: center;
+            vertical-align: super;
+        }
+
+        .glossary-popup {
+            position: absolute;
+            z-index: 10;
+            max-width: min(340px, calc(100vw - 32px));
+            padding: 12px 16px;
+            background: #fff;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+            font-size: 0.95em;
+            line-height: 1.5;
+        }
+
+        .glossary-popup p {
+            margin: 6px 0 8px;
+        }
+
+        .glossary-popup .glossary-label {
+            color: #666;
+            font-size: 0.8em;
+        }
+
+        /* Highlight the term you arrived at on the glossary page. */
+        h2:target {
+            background: #fff3c4;
+            scroll-margin-top: 20px;
+        }
     </style>
 </head>
 <body>
@@ -75,5 +129,65 @@
         <hr>
         <a href="../../">Tillbaka till alla inlägg</a>
     </footer>
+
+    <div id="glossary-popup" class="glossary-popup" role="dialog" hidden></div>
+
+    <script>
+        // Clicking a glossary word shows a short explanation instead of leaving
+        // the page. Without JavaScript the link just goes to the AI-ordbok.
+        (() => {
+            const popup = document.getElementById("glossary-popup");
+            let openFor = null;
+
+            function close() {
+                popup.hidden = true;
+                openFor = null;
+            }
+
+            function open(link) {
+                const label = document.createElement("div");
+                label.className = "glossary-label";
+                label.textContent = "Från AI-ordboken";
+
+                const title = document.createElement("strong");
+                title.textContent = link.dataset.term;
+
+                const definition = document.createElement("p");
+                definition.textContent = link.dataset.definition;
+
+                const more = document.createElement("a");
+                more.href = link.href;
+                more.textContent = "Läs mer i AI-ordboken →";
+
+                popup.replaceChildren(label, title, definition, more);
+                popup.hidden = false;
+                openFor = link;
+
+                // Place it under the word, but keep it inside the screen.
+                const rect = link.getBoundingClientRect();
+                const left = Math.max(16, Math.min(
+                    rect.left,
+                    document.documentElement.clientWidth - popup.offsetWidth - 16
+                ));
+                popup.style.left = `${left + window.scrollX}px`;
+                popup.style.top = `${rect.bottom + window.scrollY + 6}px`;
+            }
+
+            document.addEventListener("click", event => {
+                const link = event.target.closest("a.glossary-term");
+
+                if (link) {
+                    event.preventDefault();
+                    openFor === link ? close() : open(link);
+                } else if (!popup.contains(event.target)) {
+                    close();
+                }
+            });
+
+            document.addEventListener("keydown", event => {
+                if (event.key === "Escape") close();
+            });
+        })();
+    </script>
 </body>
 </html>

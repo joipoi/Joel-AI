@@ -7,7 +7,7 @@ Ni kanske hörde för några månader sedan om en händelse där några AI agent
 # Bakgrund
 För att förstå denna händelse behöver jag först förklara 2 saker
 
-1.) En del av att träna AI är det som kallas "Post-Training" vilket är någonting man gör i slutet av träningen när modellen redan finns. Du skapar problem med en lösning, ger det till en AI, ser om AI kan lösa det, om den lyckas så får den en belöning i sin "hjärna", om den misslyckas får den inget. Sen upprepar man detta miljoner gånger vilket gör att modellen blir smartare.
+1.) En del av att träna AI är det som kallas [[Post-training]]
 
 När AI gör dessa uppgifter så kan den ha olika verktyg beroende på vad som behövs. T:ex vissa uppgifter kräver att de har en internet uppkoppling medan andra får de inte lov att använda internet alls. 
 

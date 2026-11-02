@@ -25,3 +25,11 @@ People who are:
 # Blog hosting
 Currently I am hosting this on github pages and I am using Github Actions to automate the build whenever I push changes.
 I am considering just using like substack, not sure about the pros and cons there.
+
+# Glossary links
+Write `[[Term]]` in a post to link a word to the glossary (`posts/AI_Ordbok.md`). Use `[[Term|text to show]]` to show a different word form, e.g. `[[Hallucination|hallucinera]]`.
+- The word gets a dotted underline and a small "?". Clicking it shows the explanation in a popup with a link to the glossary.
+- Any part of a glossary heading works and case doesn't matter: `[[RSI]]`, `[[compute]]`.
+- New terms: add a `## Heading` in `AI_Ordbok.md`. The first paragraph under it becomes the popup text.
+- A term that doesn't exist (e.g. a typo) makes the build fail and lists the known terms.
+- Don't rename `AI_Ordbok.md`, the name is set in `src/build.js`.
