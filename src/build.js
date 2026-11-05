@@ -6,12 +6,14 @@ const { marked } = require("marked");
 
 const POSTS_DIR = path.join(__dirname, "../posts");
 const TEMPLATES_DIR = path.join(__dirname, "../templates");
+const ASSETS_DIR = path.join(__dirname, "../assets");
 const OUTPUT_DIR = path.join(__dirname, "../dist");
 
 // Public address of the site, used for link previews when sharing.
 const SITE_URL = "https://joipoi.github.io/Joel-AI/";
 const SITE_NAME = "Joels AI-blogg";
 const SITE_DESCRIPTION = "Försöker förklara AI och varför jag bryr mig";
+const FEED_URL = `${SITE_URL}feed.xml`;
 
 // Max length of the preview text shown when a link is shared.
 const DESCRIPTION_LENGTH = 160;
@@ -166,6 +168,7 @@ async function build() {
     // Recreate the generated output directory.
     await fs.rm(OUTPUT_DIR, { recursive: true, force: true });
     await fs.mkdir(OUTPUT_DIR, { recursive: true });
+    await fs.cp(ASSETS_DIR, path.join(OUTPUT_DIR, "assets"), { recursive: true });
 
     // Generate an individual HTML page for every post.
     for (const post of posts) {
@@ -174,6 +177,7 @@ async function build() {
             .replaceAll("{{siteName}}", escapeHtml(SITE_NAME))
             .replaceAll("{{description}}", escapeHtml(post.description))
             .replaceAll("{{url}}", escapeHtml(postUrl(post)))
+            .replaceAll("{{feedUrl}}", escapeHtml(FEED_URL))
             .replaceAll("{{date}}", escapeHtml(post.date))
             .replaceAll("{{displayDate}}", escapeHtml(post.displayDate))
             .replace("{{content}}", post.content);
@@ -222,6 +226,7 @@ async function build() {
         .replaceAll("{{siteName}}", escapeHtml(SITE_NAME))
         .replaceAll("{{description}}", escapeHtml(SITE_DESCRIPTION))
         .replaceAll("{{url}}", escapeHtml(SITE_URL))
+        .replaceAll("{{feedUrl}}", escapeHtml(FEED_URL))
         .replace("{{pinned}}", pinnedHtml)
         .replace("{{posts}}", postListHtml || "<p>Inga inlägg än.</p>");
 
@@ -231,7 +236,49 @@ async function build() {
         "utf8"
     );
 
+    await fs.writeFile(
+        path.join(OUTPUT_DIR, "feed.xml"),
+        buildFeed(posts),
+        "utf8"
+    );
+
     console.log(`Built ${posts.length} posts successfully.`);
+}
+
+// RSS feed with the same posts as the front page, full text included.
+function buildFeed(posts) {
+    const items = posts
+        .filter(post => !post.about)
+        .map(post => `    <item>
+      <title>${escapeHtml(post.title)}</title>
+      <link>${escapeHtml(postUrl(post))}</link>
+      <guid isPermaLink="true">${escapeHtml(postUrl(post))}</guid>
+      <pubDate>${new Date(post.date).toUTCString()}</pubDate>
+      <description>${escapeHtml(post.description)}</description>
+      <content:encoded>${escapeHtml(absoluteLinks(post))}</content:encoded>
+    </item>`)
+        .join("\n");
+
+    return `<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>${escapeHtml(SITE_NAME)}</title>
+    <link>${escapeHtml(SITE_URL)}</link>
+    <description>${escapeHtml(SITE_DESCRIPTION)}</description>
+    <language>sv</language>
+    <atom:link href="${escapeHtml(FEED_URL)}" rel="self" type="application/rss+xml"/>
+${items}
+  </channel>
+</rss>
+`;
+}
+
+// Feed readers show a post outside the site, so the relative glossary links
+// need the full address to keep working.
+function absoluteLinks(post) {
+    return post.content
+        .replaceAll('href="../', `href="${SITE_URL}posts/`)
+        .replaceAll('href="#', `href="${postUrl(post)}#`);
 }
 
 // Read the glossary post and collect every "## Heading" as a term.
