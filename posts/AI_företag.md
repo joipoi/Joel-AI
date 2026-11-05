@@ -1,6 +1,8 @@
 ---
 date: 2026-10-13
 title: Sammanfattning på AI företag
+tags:
+  - företag
 ---
 Jag tänkte det kunde vara bra att skriva en sammanfattning av vilka AI företag som finns och hur de skiljer sig åt för de som inte vet. Jag har med alla de stora företagen här men om man inte bryr sig så mycket så skulle jag säga top 3 man ska kunna är: OpenAI, Anthropic och Google.
 

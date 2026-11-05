@@ -34,6 +34,29 @@ nav {
     color: #666;
 }
 
+/* Keep images inside the text column, also on phones. */
+img {
+    max-width: 100%;
+    height: auto;
+}
+
+.tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    list-style: none;
+    margin: 8px 0 0;
+    padding: 0;
+}
+
+.tags li {
+    padding: 0 10px;
+    background: #eef5fb;
+    border-radius: 999px;
+    color: #1769aa;
+    font-size: 0.85rem;
+}
+
 /* Front page */
 
 .post {

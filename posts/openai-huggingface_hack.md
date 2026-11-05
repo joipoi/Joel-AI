@@ -1,6 +1,10 @@
 ---
 date: 2026-10-25
 title: En svärm AI modeller från OpenAI hackar in i HuggingFace
+tags:
+  - faror
+  - förklarat
+  - säkerhet
 ---
 Ni kanske hörde för några månader sedan om en händelse där några AI agenter från OpenAI hackade sig in i ett annat AI företag som heter Huggingface. Jag skulle vilja förklara vad som hände och varför det spelar någon roll. Det är inte den enda gången något sådant händer, några veckor sedan var det andra AI som hackade sig in i hemsida som tillhörde den [Australienska regeringen](https://www.bbc.com/news/articles/cmx2qne2j88wo). Detta har hänt många gånger men just denna händelse har fått mest uppmärksamhet och jag ska försöka förklara varför.
 

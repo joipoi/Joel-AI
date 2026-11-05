@@ -1,6 +1,3 @@
 # TODO
-- [x] **RSS feed** add rss feed (`feed.xml`).
-- [x] **Local preview.** An `npm run dev` command that rebuilds and serves the site locally, so you don't need to push to see changes.
-- [x] **Shared stylesheet.** The CSS is duplicated in both templates. Move it to `assets/style.css` and copy `assets/` in the build (it is currently empty and not copied).
-- [x] **Small cleanup:** `package.json` points to `src/index.js`, which doesn't exist.
-- [x] **CLAUDE.md:** add a short "how the site works" section (build, frontmatter fields, deploy on push).
+- [x] Add tags(I have added tags to my markdown posts in /posts), they should be displayed under the title of the post
+- [x] Add images(I have not used images in a post yet, I want to start now, maybe no new code is needed for this, in that case tell me otherwise write it.)

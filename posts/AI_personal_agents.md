@@ -1,6 +1,10 @@
 ---
 title: Personliga AI-agenter
 date: 2026-10-29
+tags:
+  - praktiskt
+  - förklarat
+  - vardagen
 ---
 Ett sett man kan använda AI som har blivit mer populärt på senaste tiden är att man kopplar en AI som ChatGPT till sin kalender, mail, dokument, osv. Sen kan man fråga saker till denna AI och den kan kolla igenom dessa och hitta svaren. Till exempel man kan fråga vilken tid var mitt möte imorgon eller vad sade mailet jag fick förra veckan. 
 

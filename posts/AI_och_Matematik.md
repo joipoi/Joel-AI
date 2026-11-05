@@ -1,6 +1,9 @@
 ---
 date: 2026-10-07
 title: AI och matematik
+tags:
+  - nyhet
+  - utveckling
 ---
 Det är många som pratar om AI och matematik just nu eftersom modellerna håller på att bli väldigt bra på det. Jag kan ingenting om matematik så jag baserar detta på vad jag har läst och på reaktionerna från kända matematiker.
 

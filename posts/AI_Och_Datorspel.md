@@ -1,6 +1,9 @@
 ---
 date: 2026-10-07
 title: Ai och Datorspel
+tags:
+  - nyhet
+  - utveckling
 ---
 Det är någonting som håller på att hända inom datorspel som jag vill skriva om. Det involverar AI och jag tycker det är ett bra exempel på hur bra AI är nu och hur mycket världen kommer ändras. Även om du inte bryr dig om datorspel tycker jag det är intressant
 

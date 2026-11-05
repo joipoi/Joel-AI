@@ -1,6 +1,8 @@
 ---
 title: Kan vi veta vad som är skapat av AI?
 date: 2026-10-25
+tags:
+  - förklarat
 ---
 AI blir bättre och bättre på att skapa text, bilder och video som liknar vad människor gör. Det blir allt svårare att veta vad som skapades av AI. Jag tycker en intressant fråga är "är det möjligt att veta om något är genererat av AI?". I detta inlägg ska jag försöka svara på det.
 

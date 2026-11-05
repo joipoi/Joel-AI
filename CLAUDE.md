@@ -24,6 +24,7 @@ Feel free to edit this Claude.md file however you want
 - All CSS is in `assets/style.css`. Any other files in `assets/` also end up on the site.
 - Every push to `main` builds and deploys to GitHub Pages (`.github/workflows/deploy.yml`), so pushing means publishing. The address is set in `SITE_URL` in `src/build.js`.
 - Glossary links (`[[Term]]`) are explained in the README.
+- Images go in `assets/images/` and are used in a post with `![Beskrivning](../../assets/images/bild.png)`. The path is relative to the published page, so it won't show in an editor's Markdown preview, use `npm run dev`.
 
 Frontmatter fields for a post:
 
@@ -33,6 +34,7 @@ title: Required
 date: 2026-10-24          # required
 description: Optional. Text shown in link previews, on the front page and in RSS. Defaults to the start of the first paragraph.
 slug: optional-url-name   # optional. Defaults to the filename, e.g. AI_företag.md -> /posts/ai-foretag/
+tags: [nyhet, faror]      # optional. Shown under the title on the post page. Ideas for tags are in tag_list.md.
 about: true               # optional. Pins the post to the top of the front page and leaves it out of the list and RSS. Only one post can have this.
 ---
 ```

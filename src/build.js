@@ -12,7 +12,6 @@ const OUTPUT_DIR = path.join(__dirname, "../dist");
 // Public address of the site, used for link previews when sharing.
 const SITE_URL = "https://joipoi.github.io/Joel-AI/";
 const SITE_NAME = "Joels AI-blogg";
-const SITE_DESCRIPTION = "Försöker förklara AI och varför jag bryr mig";
 const FEED_URL = `${SITE_URL}feed.xml`;
 
 // Max length of the preview text shown when a link is shared.
@@ -146,6 +145,7 @@ async function build() {
             displayDate: dateFormatter.format(date),
             slug,
             about: data.about === true,
+            tags: [data.tags ?? []].flat().map(String),
             description: data.description
                 ? String(data.description)
                 : firstParagraphText(content),
@@ -180,6 +180,7 @@ async function build() {
             .replaceAll("{{feedUrl}}", escapeHtml(FEED_URL))
             .replaceAll("{{date}}", escapeHtml(post.date))
             .replaceAll("{{displayDate}}", escapeHtml(post.displayDate))
+            .replace("{{tags}}", () => tagsHtml(post.tags))
             .replace("{{content}}", post.content);
 
         const postOutputDir = path.join(
@@ -224,7 +225,6 @@ async function build() {
 
     const indexHtml = indexTemplate
         .replaceAll("{{siteName}}", escapeHtml(SITE_NAME))
-        .replaceAll("{{description}}", escapeHtml(SITE_DESCRIPTION))
         .replaceAll("{{url}}", escapeHtml(SITE_URL))
         .replaceAll("{{feedUrl}}", escapeHtml(FEED_URL))
         .replace("{{pinned}}", pinnedHtml)
@@ -243,6 +243,15 @@ async function build() {
     );
 
     console.log(`Built ${posts.length} posts successfully.`);
+}
+
+function tagsHtml(tags) {
+    if (tags.length === 0) {
+        return "";
+    }
+
+    const items = tags.map(tag => `<li>${escapeHtml(tag)}</li>`).join("");
+    return `<ul class="tags">${items}</ul>`;
 }
 
 // RSS feed with the same posts as the front page, full text included.
@@ -264,7 +273,7 @@ function buildFeed(posts) {
   <channel>
     <title>${escapeHtml(SITE_NAME)}</title>
     <link>${escapeHtml(SITE_URL)}</link>
-    <description>${escapeHtml(SITE_DESCRIPTION)}</description>
+    <description>${escapeHtml(SITE_NAME)}</description>
     <language>sv</language>
     <atom:link href="${escapeHtml(FEED_URL)}" rel="self" type="application/rss+xml"/>
 ${items}
@@ -273,10 +282,11 @@ ${items}
 `;
 }
 
-// Feed readers show a post outside the site, so the relative glossary links
-// need the full address to keep working.
+// Feed readers show a post outside the site, so relative glossary links and
+// images need the full address to keep working.
 function absoluteLinks(post) {
     return post.content
+        .replaceAll('src="../../', `src="${SITE_URL}`)
         .replaceAll('href="../', `href="${SITE_URL}posts/`)
         .replaceAll('href="#', `href="${postUrl(post)}#`);
 }
@@ -332,16 +342,13 @@ function postUrl(post) {
 
 // Use the first paragraph of the post as preview text, shortened if needed.
 function firstParagraphText(markdown) {
-    const paragraph = marked.lexer(markdown)
-        .find(token => token.type === "paragraph");
-
-    if (!paragraph) {
-        return SITE_DESCRIPTION;
-    }
-
-    const text = unescapeHtml(
-        marked.parser([paragraph]).replace(/<[^>]*>/g, "")
-    ).replace(/\s+/g, " ").trim();
+    // Skip paragraphs without text, e.g. a post that starts with an image.
+    const text = marked.lexer(markdown)
+        .filter(token => token.type === "paragraph")
+        .map(paragraph => unescapeHtml(
+            marked.parser([paragraph]).replace(/<[^>]*>/g, "")
+        ).replace(/\s+/g, " ").trim())
+        .find(Boolean) ?? "";
 
     if (text.length <= DESCRIPTION_LENGTH) {
         return text;
